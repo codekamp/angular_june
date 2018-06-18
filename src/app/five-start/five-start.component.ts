@@ -15,7 +15,7 @@ export class FiveStartComponent {
   setRating(rating: number) {
     this.rating = rating;
 
-    this.onRatingChange.next(rating);
+    this.onRatingChange.next(99);
   }
 
 }
