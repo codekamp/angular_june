@@ -12,8 +12,8 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  login() {
-    console.log("login button clicked");
+  login(username:string, password:string) {
+    console.log("form submitted", username, password);
   }
 
   goToSignup() {

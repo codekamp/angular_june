@@ -1,8 +1,10 @@
-<div class="header row" style="align-items: center">
-  <img src="/assets/images/filled-star.png" height="40">
-  <a>Home</a>
+<div class="header" fxLayout.xs="column wrap" fxLayout="row" fxLayoutGap="50px" fxLayoutGap.sm="10px"
+fxLayoutAlign="start center" fxLayoutAlign.xs="start start"
+>
+  <img src="/assets/images/filled-star.png" src.xs="/assets/images/empty-star.png" height="40">
+  <a ngClass.xs="small-screen" ngClass.md="medium">Home</a>
   <a>About Us</a>
   <a>Contact Us</a>
-  <span class="filler"></span>
-  <a>Logout</a>
+  <span fxFlex="100px"></span>
+  <a fxFlexAlign="center" routerLink="/login">Login</a>
 </div>

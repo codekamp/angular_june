@@ -4,10 +4,6 @@ import { Component, OnInit } from '@angular/core';
   selector: 'app-header',
   templateUrl: './header.component.html',
   styles: [`
-    .header > a, .header > img {
-      margin-right: 30px;
-    }
-    
     .header {
       justify-content: space-around;
     }

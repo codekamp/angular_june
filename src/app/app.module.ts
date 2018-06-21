@@ -15,6 +15,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import {myRoutes} from './routes';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,10 @@ import { FooterComponent } from './footer/footer.component';
     RouterModule.forRoot(myRoutes),
     MatButtonModule,
     MatCardModule,
-    MatInputModule
+    MatInputModule,
+    FlexLayoutModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
