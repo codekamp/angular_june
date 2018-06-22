@@ -1,10 +1,11 @@
 <mat-card style="width: 500px">
-  <form class="column" (submit)="login(pqr.value, xyz.value)">
+  <form class="column" (submit)="login(pqr, xyz)">
     <mat-form-field>
-      <input #pqr matInput placeholder="Username">
+      <input #pqr matInput placeholder="Username" [formControl]="usernameControl">
     </mat-form-field>
+    <h3>Showing results for: {{myValue}}</h3>
     <mat-form-field>
-      <input #xyz matInput placeholder="Password" type="password">
+      <input #xyz matInput placeholder="Password" type="password"  [formControl]="passwordControl">
     </mat-form-field>
     <button mat-raised-button color="accent" style="align-self: flex-end">Login</button>
   </form>
