@@ -1,4 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {AlertService} from '../services/alert.service';
 
 @Component({
   selector: 'app-signup',
@@ -7,7 +8,10 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 })
 export class SignupComponent implements OnInit {
 
-  constructor() { }
+
+  constructor(private myAlertService: AlertService) {
+    console.log("SignupComponent kaa constructor", myAlertService);
+  }
 
   ngOnInit() {
   }

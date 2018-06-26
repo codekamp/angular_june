@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, InjectionToken, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/debounceTime';
@@ -19,6 +19,10 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/concatMap';
+import {AlertService} from '../services/alert.service';
+
+
+export const serverUrlToken = new InjectionToken<string>("SERVER_URL");
 
 @Component({
   selector: 'app-login',
@@ -39,8 +43,14 @@ export class LoginComponent implements OnInit {
 
   myValue: string;
 
-  constructor() {
+  constructor(private myAlertService: AlertService) {
   }
+
+  // same as above
+  // private myAlertService: AlertService;
+  // constructor(localAlert: AlertService){
+  //   this.myAlertService = localAlert;
+  // }
 
   ngOnInit() {
     // setInterval(() => {
@@ -66,24 +76,24 @@ export class LoginComponent implements OnInit {
     //   this.passwordControl.valueChanges, (lu, lp) => lu.length + lp.length)
     //   .subscribe(value => console.log("combineLatest output: " + value));
 
-    this.usernameControl.valueChanges.startWith('').combineLatest(
-      this.passwordControl.valueChanges.startWith(''), (lu, lp) => {
-        return {username: lu, password: lp};
-      }).skip(1)
-      .subscribe(value => console.log('combineLatest output: ', value));
-
-
-    this.usernameControl.valueChanges.debounce(username => Observable.of(0).delay(username.length * 100))
-      .subscribe(value => console.log(value));
-
-
-    this.usernameControl.valueChanges.takeWhile(uname => uname.length < 5)
-      .reduce((acc, value) => acc + value.length, 0)
-      .subscribe(data => console.log(data));
-
-
-    this.usernameControl.valueChanges.concatMap(value => Observable.interval(value.length * 100))
-      .subscribe(value => console.log(value));
+    // this.usernameControl.valueChanges.startWith('').combineLatest(
+    //   this.passwordControl.valueChanges.startWith(''), (lu, lp) => {
+    //     return {username: lu, password: lp};
+    //   }).skip(1)
+    //   .subscribe(value => console.log('combineLatest output: ', value));
+    //
+    //
+    // this.usernameControl.valueChanges.debounce(username => Observable.of(0).delay(username.length * 100))
+    //   .subscribe(value => console.log(value));
+    //
+    //
+    // this.usernameControl.valueChanges.takeWhile(uname => uname.length < 5)
+    //   .reduce((acc, value) => acc + value.length, 0)
+    //   .subscribe(data => console.log(data));
+    //
+    //
+    // this.usernameControl.valueChanges.concatMap(value => Observable.interval(value.length * 100))
+    //   .subscribe(value => console.log(value));
 
 
     // if function given to map returns Observable of String,
@@ -98,6 +108,8 @@ export class LoginComponent implements OnInit {
 
     username.value = '';
     password.value = '';
+
+    this.myAlertService.success('Login successful');
   }
 
   goToSignup() {

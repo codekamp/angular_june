@@ -1,14 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 
 
 import { AppComponent } from './app.component';
 import {ImgCaptionComponent} from './img-caption/img-caption.component';
-import { LoginComponent } from './login/login.component';
+import {LoginComponent, serverUrlToken} from './login/login.component';
 import { FiveStartComponent } from './five-start/five-start.component';
 import { StarComponent } from './star/star.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCardModule, MatInputModule} from '@angular/material';
+import {MatButtonModule, MatCardModule, MatInputModule, MatSnackBarModule} from '@angular/material';
 import { SignupComponent } from './signup/signup.component';
 import {RouterModule} from '@angular/router';
 import { NotFoundComponent } from './not-found/not-found.component';
@@ -17,6 +17,7 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {AlertService} from './services/alert.service';
 
 @NgModule({
   declarations: [
@@ -39,9 +40,13 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     MatInputModule,
     FlexLayoutModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSnackBarModule
   ],
-  providers: [],
+  providers: [
+    {provide: AlertService, useClass: AlertService},
+    {provide: serverUrlToken, useValue: 'https://codekamp.in'}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
