@@ -19,7 +19,8 @@ import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/concatMap';
 import {AlertService} from '../services/alert.service';
-import {CustomValidators} from '../custom-validators';
+import {ApiService} from '../services/api.service';
+import {EventBus} from '../services/event-bus';
 
 
 export const serverUrlToken = new InjectionToken<string>('SERVER_URL');
@@ -40,13 +41,15 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   usernameControl = new FormControl(null, [Validators.required, Validators.email]);
-  passwordControl = new FormControl(null, [Validators.required, CustomValidators.greaterLength(this.usernameControl)]);
+  passwordControl = new FormControl(null, [Validators.required]);
 
   // touched/untouched, pristine/dirty, valid/invalid
 
   myValue: string;
 
-  constructor(private myAlertService: AlertService) {
+  constructor(private myAlertService: AlertService,
+              private apiService: ApiService,
+              private eventBus: EventBus) {
     this.loginForm = new FormGroup({
       myUsername: this.usernameControl,
       passwordField: this.passwordControl
@@ -124,15 +127,25 @@ export class LoginComponent implements OnInit {
     // but if function given to switchMap returns Observable of String,
     // then output of switchMap will be Observable of String
 
-    this.loginForm.valueChanges.subscribe(value => console.log('changed form value', value));
+    // this.loginForm.valueChanges.subscribe(value => console.log('changed form value', value));
   }
 
   login() {
-    console.log('form submitted', this.usernameControl.value, this.passwordControl.value);
+    const obs = this.apiService.login(this.usernameControl.value, this.passwordControl.value);
+    obs.subscribe((data: any) => {
+        localStorage.setItem('USER_TOKEN', data.token);
+        localStorage.setItem('USER_NAME', data.user.first_name + ' ' + data.user.last_name);
 
-    this.loginForm.reset();
+        this.eventBus.announce('LOGIN_SUCCESS', data.user);
 
-    this.myAlertService.success('Login successful');
+        this.myAlertService.success('Login Successful!');
+      },
+      error => {
+        console.log('error is', error);
+        this.myAlertService.error(error.error.message);
+      });
+
+    console.log('after subscribe');
   }
 
   goToSignup() {

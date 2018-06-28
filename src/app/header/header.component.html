@@ -5,6 +5,7 @@ fxLayoutAlign="start center" fxLayoutAlign.xs="start start"
   <a ngClass.xs="small-screen" ngClass.md="medium">Home</a>
   <a>About Us</a>
   <a>Contact Us</a>
-  <span fxFlex="100px"></span>
-  <a fxFlexAlign="center" routerLink="/login">Login</a>
+  <span fxFlex="1 1 0"></span>
+  <a fxFlexAlign="center" routerLink="/login" *ngIf="!username">Login</a>
+  <a fxFlexAlign="center" routerLink="/profile" *ngIf="username">{{username}}</a>
 </div>

@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {EventBus} from '../services/event-bus';
 
 @Component({
   selector: 'app-header',
@@ -8,11 +9,17 @@ import {HttpClient} from '@angular/common/http';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  username: string | null;
+
+  constructor(private eventBus: EventBus) { }
 
   ngOnInit() {
-  }
+    this.username = localStorage.getItem('USER_NAME');
 
+    this.eventBus.listen('LOGIN_SUCCESS').subscribe(user => {
+      this.username = user.first_name + ' ' + user.last_name;
+    });
+  }
 }
 
 

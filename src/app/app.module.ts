@@ -18,6 +18,9 @@ import { FooterComponent } from './footer/footer.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AlertService} from './services/alert.service';
+import {HttpClientModule} from '@angular/common/http';
+import {ApiService} from './services/api.service';
+import {EventBus} from './services/event-bus';
 
 @NgModule({
   declarations: [
@@ -41,11 +44,14 @@ import {AlertService} from './services/alert.service';
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    HttpClientModule
   ],
   providers: [
     {provide: AlertService, useClass: AlertService},
-    {provide: serverUrlToken, useValue: 'https://codekamp.in'}
+    {provide: serverUrlToken, useValue: 'https://codekamp.in'},
+    ApiService,
+    EventBus
   ],
   bootstrap: [AppComponent]
 })
