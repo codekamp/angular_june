@@ -1,3 +1,4 @@
+import './rxjs-imports';
 import { BrowserModule } from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
@@ -8,7 +9,10 @@ import {LoginComponent, serverUrlToken} from './login/login.component';
 import { FiveStartComponent } from './five-start/five-start.component';
 import { StarComponent } from './star/star.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatButtonModule, MatCardModule, MatInputModule, MatSnackBarModule} from '@angular/material';
+import {
+  MatButtonModule, MatCardModule, MatInputModule, MatProgressSpinnerModule,
+  MatSnackBarModule
+} from '@angular/material';
 import { SignupComponent } from './signup/signup.component';
 import {RouterModule} from '@angular/router';
 import { NotFoundComponent } from './not-found/not-found.component';
@@ -21,6 +25,12 @@ import {AlertService} from './services/alert.service';
 import {HttpClientModule} from '@angular/common/http';
 import {ApiService} from './services/api.service';
 import {EventBus} from './services/event-bus';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { VideosComponent } from './videos/videos.component';
+import { EmailsComponent } from './emails/emails.component';
+import {AuthGuard} from './guards/auth.guard';
+import { CenterSpinnerComponent } from './center-spinner/center-spinner.component';
+import { VideoCardComponent } from './video-card/video-card.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +42,12 @@ import {EventBus} from './services/event-bus';
     SignupComponent,
     NotFoundComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    DashboardComponent,
+    VideosComponent,
+    EmailsComponent,
+    CenterSpinnerComponent,
+    VideoCardComponent
   ],
   imports: [
     BrowserModule,
@@ -45,13 +60,15 @@ import {EventBus} from './services/event-bus';
     FormsModule,
     ReactiveFormsModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
     HttpClientModule
   ],
   providers: [
     {provide: AlertService, useClass: AlertService},
     {provide: serverUrlToken, useValue: 'https://codekamp.in'},
     ApiService,
-    EventBus
+    EventBus,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

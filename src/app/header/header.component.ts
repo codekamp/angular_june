@@ -1,6 +1,6 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
 import {EventBus} from '../services/event-bus';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +11,7 @@ export class HeaderComponent implements OnInit {
 
   username: string | null;
 
-  constructor(private eventBus: EventBus) { }
+  constructor(private eventBus: EventBus, private router: Router) { }
 
   ngOnInit() {
     this.username = localStorage.getItem('USER_NAME');
@@ -20,13 +20,9 @@ export class HeaderComponent implements OnInit {
       this.username = user.first_name + ' ' + user.last_name;
     });
   }
+
+  logout() {
+    localStorage.clear();
+    this.router.navigate(['login']);
+  }
 }
-
-
-// ViewEncapsulation.None - inner css will impact outside world and vice versa
-
-// ViewEncapsulation.Emulated - This is default value. Outside css will impact inner
-// ... but inner won't impact outside. Random attributes are added to achieve this
-
-// ViewEncapsulation.Native - Ouside won't impact inside and vice versa.
-// /// uses ShadowDom, which is not available in all browsers.

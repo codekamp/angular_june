@@ -11,3 +11,7 @@
 /*/deep/ h1 {*/
   /*color: red;*/
 /*}*/
+
+a {
+  cursor: pointer;
+}

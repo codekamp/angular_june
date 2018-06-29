@@ -2,10 +2,9 @@
 fxLayoutAlign="start center" fxLayoutAlign.xs="start start"
 >
   <img src="/assets/images/filled-star.png" src.xs="/assets/images/empty-star.png" height="40">
-  <a ngClass.xs="small-screen" ngClass.md="medium">Home</a>
-  <a>About Us</a>
-  <a>Contact Us</a>
+  <a routerLink="/dashboard/videos">Videos</a>
+  <a routerLink="/dashboard/emails">Emails</a>
   <span fxFlex="1 1 0"></span>
-  <a fxFlexAlign="center" routerLink="/login" *ngIf="!username">Login</a>
-  <a fxFlexAlign="center" routerLink="/profile" *ngIf="username">{{username}}</a>
+  <a fxFlexAlign="center" routerLink="/profile">{{username}}</a>
+  <a fxFlexAlign="center" (click)="logout()">logout</a>
 </div>
