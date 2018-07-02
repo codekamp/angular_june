@@ -31,6 +31,8 @@ import { EmailsComponent } from './emails/emails.component';
 import {AuthGuard} from './guards/auth.guard';
 import { CenterSpinnerComponent } from './center-spinner/center-spinner.component';
 import { VideoCardComponent } from './video-card/video-card.component';
+import {FlexAlignmentHackDirective} from './directives/flex-alignment-hack';
+import {TruncatePipe} from './pipes/truncate';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,9 @@ import { VideoCardComponent } from './video-card/video-card.component';
     VideosComponent,
     EmailsComponent,
     CenterSpinnerComponent,
-    VideoCardComponent
+    VideoCardComponent,
+    FlexAlignmentHackDirective,
+    TruncatePipe
   ],
   imports: [
     BrowserModule,

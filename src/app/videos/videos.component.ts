@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../services/api.service';
 import {Video} from '../models/video';
 
@@ -13,6 +13,7 @@ import {Video} from '../models/video';
       flex-wrap: wrap;
       justify-content: center;
     }
+
     app-video-card, span {
       width: 200px;
       margin: 5px;
@@ -23,10 +24,17 @@ export class VideosComponent implements OnInit {
 
   videos: Video[] = [];
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService) {
+  }
 
   ngOnInit() {
-    this.apiService.getVideos().subscribe(videos => this.videos = videos);
+    this.videos = this.apiService.videos;
+    if (!this.videos) {
+      this.apiService.getVideos().subscribe(videos => {
+        this.videos = videos;
+        localStorage.setItem('saved_videos', JSON.stringify(videos));
+      });
+    }
   }
 
 }
