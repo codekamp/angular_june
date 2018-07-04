@@ -33,6 +33,10 @@ import { CenterSpinnerComponent } from './center-spinner/center-spinner.componen
 import { VideoCardComponent } from './video-card/video-card.component';
 import {FlexAlignmentHackDirective} from './directives/flex-alignment-hack';
 import {TruncatePipe} from './pipes/truncate';
+import {StoreModule} from '@ngrx/store';
+import {reducers} from './state/index';
+import {StoreDevtools, StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -65,7 +69,9 @@ import {TruncatePipe} from './pipes/truncate';
     ReactiveFormsModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    HttpClientModule
+    HttpClientModule,
+    StoreModule.forRoot(reducers),
+    environment.production ? [] : StoreDevtoolsModule.instrument()
   ],
   providers: [
     {provide: AlertService, useClass: AlertService},

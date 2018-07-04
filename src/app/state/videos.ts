@@ -1,37 +1,58 @@
 import {Video} from '../models/video';
 import {PayloadAction} from '../actions/index';
-import {VIDEO_DELETE_ACTION, VIDEOS_ADD_ACTION} from '../actions/video';
+import {VIDEO_DELETE_ACTION, VIDEOS_ADD_ACTION, VIDEOS_APPEND_ACTION} from '../actions/video';
+import {createEntityAdapter, EntityState} from '@ngrx/entity';
 
-export interface VideoState {
-  ids: number[];
-  entities: { [id: number]: Video };
+export interface VideoState extends EntityState<Video> {
 }
 
-const initialState: VideoState = {
-  ids: [],
-  entities: null,
+export const videoAdapter = createEntityAdapter<Video>({
+  selectId: video => video.id
+});
 
-};
+const initialState: VideoState = videoAdapter.getInitialState();
 
-function videoReducer(currentState: VideoState, action: PayloadAction): VideoState {
+export function videoReducer(currentState: VideoState = initialState, action: PayloadAction): VideoState {
   switch (action.type) {
-    case VIDEOS_ADD_ACTION:
-      const videos: Video[] = action.payload;
-      const newIds = videos.map(video => video.id);
-      const newEntities = {};
+    case VIDEOS_ADD_ACTION: {
+      // const videos: Video[] = action.payload;
+      // const newIds = videos.map(video => video.id);
+      // const newEntities = {};
+      //
+      // videos.forEach(video => {
+      //   newEntities[video.id] = video;
+      // });
+      //
+      // return {...currentState, ids: newIds, entities: newEntities};
 
-      videos.forEach(video => {
-        newEntities[video.id] = video;
-      });
+      return videoAdapter.addAll(action.payload, currentState);
+    }
+    case VIDEOS_APPEND_ACTION: {
+      // const videos: Video[] = action.payload;
+      // const newIds = videos.map(video => video.id);
+      // const newEntities = {};
+      //
+      // videos.forEach(video => {
+      //   newEntities[video.id] = video;
+      // });
+      //
+      // return {
+      //   ...currentState,
+      //   ids: [...currentState.ids, ...newIds],
+      //   entities: {...currentState.entities, ...newEntities}
+      // };
 
-      return {...currentState, ids: newIds, entities: newEntities};
-    case VIDEO_DELETE_ACTION:
-      const videoId: number = action.payload;
-      return null;
+      return videoAdapter.addMany(action.payload, currentState);
+    }
+    case VIDEO_DELETE_ACTION: {
+      return videoAdapter.removeOne(action.payload, currentState);
+    }
     default:
       return currentState;
   }
 }
+
+export const _getVideos = (state: VideoState) => (state.ids as number[]).map(id => state.entities[id]);
 
 // const a = {name: 'suresh', email: 'suresh@gmail.com'};
 // const b = {hometown: 'meerut', email: 'ramesh@yahoo.com'};

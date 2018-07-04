@@ -1,7 +1,7 @@
-import {VideoState} from './videos';
-import {EmailState} from './emails';
-import {AppState} from './app';
-import {createSelector} from '@ngrx/store';
+import {_getVideos, videoReducer, VideoState} from './videos';
+import {emailReducer, EmailState} from './emails';
+import {appReducer, AppState} from './app';
+import {ActionReducerMap, createSelector} from '@ngrx/store';
 
 export interface State {
   videos: VideoState;
@@ -12,26 +12,28 @@ export interface State {
 
 // naye objects can have purana data, but purane objects can't have new data.
 
+export const reducers: ActionReducerMap<State> = {
+  videos: videoReducer,
+  emails: emailReducer,
+  app: appReducer
+};
 
 export const getVideoState = (state: State) => state.videos;
-export const getEmailState = (state: State) => state.emails;
 
-export const getVideoIds = createSelector(getVideoState,
-  (videoState: VideoState) => videoState.ids);
+export const getVideos = createSelector(getVideoState, _getVideos);
 
 
-export const getVideoEntities = createSelector(getVideoState, state => state.entities);
 
-export const getEmails = createSelector(getEmailState,
-  (emailState: EmailState) =>
-    emailState.ids.map(id => emailState.entities[id])
-);
+// GET - /conversations - list of converations. pagination. limit=10, offset/page
+// POST - /conversations - data to create new converastion
+// GET - /conversations/{convId} - return individual conversation data
+// DELETE - /conversations/{convId} - Delete convId conversation
+// PUT/PATCH - /conversations/{convId} - update convId conversation
 
-export const getEmailVideoIds = createSelector(getEmailState, state => state.videos)
 
-export const getEmailVideos = createSelector(
-  getVideoEntities, getEmailVideoIds,
-  (videoEntities, emailVideoIds) => {
-    // Object.keys(emailVideoIds).map(id => emailVideoIds)
-  }
-)
+
+// GET - conversations/{convId}/messages - list of messages
+// POST - conversations/{convId}/messages - Add new message
+// GET - /message/{msgId} - return individual message
+// DELETE - /message/{msgId} - Delete msgId message
+// PUT/PATCH - /message/{msgId} - Update msgId message

@@ -7,8 +7,6 @@ import {Video} from '../models/video';
 @Injectable()
 export class ApiService {
 
-  videos: Video[];
-
   constructor(private http: HttpClient) {
 
   }
@@ -28,7 +26,7 @@ export class ApiService {
     const token = localStorage.getItem('USER_TOKEN');
     return this.http.get<{data: Video[]}>('https://api.invidz.com/api/videos', {
       headers: {Authorization: 'bearer ' + token}
-    }).map(res => res.data).do(videos => this.videos = videos);
+    }).map(res => res.data);
   }
 
   // state - big json object which stores all the data that need to be presisted
