@@ -1,20 +1,32 @@
 import {Video} from '../models/video';
 import {PayloadAction} from '../actions/index';
-import {VIDEO_DELETE_ACTION, VIDEOS_ADD_ACTION, VIDEOS_APPEND_ACTION} from '../actions/video';
+import {
+  VIDEO_DELETE_ACTION, VIDEO_UPDATE_ACTION, VIDEOS_ADD_ACTION, VIDEOS_APPEND_ACTION,
+  VIDEOS_SET_LOADING_ACTION
+} from '../actions/video';
 import {createEntityAdapter, EntityState} from '@ngrx/entity';
 
 export interface VideoState extends EntityState<Video> {
+  loaded: boolean;
+  loading: boolean;
+  //
+  // messagesLoading: {[id:number]: boolean} // {10: false, 20:true}
+  // messagePagesLoaded: {[id:number]: number} // {10: 3, 20: 5}
+  // messages: {[id:number]: number[]} // {10: [5, 7, 9], 20: [3, 11]}
 }
 
 export const videoAdapter = createEntityAdapter<Video>({
   selectId: video => video.id
 });
 
-const initialState: VideoState = videoAdapter.getInitialState();
+const initialState: VideoState = videoAdapter.getInitialState({
+  loaded: false,
+  loading: false
+});
 
 export function videoReducer(currentState: VideoState = initialState, action: PayloadAction): VideoState {
   switch (action.type) {
-    case VIDEOS_ADD_ACTION: {
+    case VIDEOS_ADD_ACTION:
       // const videos: Video[] = action.payload;
       // const newIds = videos.map(video => video.id);
       // const newEntities = {};
@@ -25,8 +37,8 @@ export function videoReducer(currentState: VideoState = initialState, action: Pa
       //
       // return {...currentState, ids: newIds, entities: newEntities};
 
-      return videoAdapter.addAll(action.payload, currentState);
-    }
+      return videoAdapter.addAll(action.payload, {...currentState, loading: false, loaded: true});
+
     case VIDEOS_APPEND_ACTION: {
       // const videos: Video[] = action.payload;
       // const newIds = videos.map(video => video.id);
@@ -47,14 +59,21 @@ export function videoReducer(currentState: VideoState = initialState, action: Pa
     case VIDEO_DELETE_ACTION: {
       return videoAdapter.removeOne(action.payload, currentState);
     }
+    case VIDEOS_SET_LOADING_ACTION: {
+      return {...currentState, loading: action.payload};
+    }
+    case VIDEO_UPDATE_ACTION: {
+      return videoAdapter.updateOne({id: action.payload.id, changes: action.payload}, currentState);
+    }
     default:
       return currentState;
   }
 }
 
-export const _getVideos = (state: VideoState) => (state.ids as number[]).map(id => state.entities[id]);
+export const _areVideosLoading = (state: VideoState) => state.loading;
+export const _areVideosLoaded = (state: VideoState) => state.loaded;
 
-// const a = {name: 'suresh', email: 'suresh@gmail.com'};
+const a = {name: 'suresh', email: 'suresh@gmail.com'};
 // const b = {hometown: 'meerut', email: 'ramesh@yahoo.com'};
 //
 // const c = {a, b}; // {a: a, b: b}

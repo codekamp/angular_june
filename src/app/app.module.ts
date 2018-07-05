@@ -37,6 +37,7 @@ import {StoreModule} from '@ngrx/store';
 import {reducers} from './state/index';
 import {StoreDevtools, StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
+import {VideoManager} from './managers/video.manager';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import {environment} from '../environments/environment';
     {provide: serverUrlToken, useValue: 'https://codekamp.in'},
     ApiService,
     EventBus,
-    AuthGuard
+    AuthGuard,
+    VideoManager
   ],
   bootstrap: [AppComponent]
 })

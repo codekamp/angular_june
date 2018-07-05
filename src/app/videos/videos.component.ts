@@ -1,10 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {ApiService} from '../services/api.service';
+import {AfterViewChecked, Component, DoCheck, OnInit} from '@angular/core';
 import {Video} from '../models/video';
-import {Store} from '@ngrx/store';
-import {getVideos, State} from '../state/index';
-import {Observable} from 'rxjs/Observable';
-import {AddVideosAction} from '../actions/video';
+import {VideoManager} from '../managers/video.manager';
 
 @Component({
   selector: 'app-videos',
@@ -24,26 +20,23 @@ import {AddVideosAction} from '../actions/video';
     }
   `]
 })
-export class VideosComponent implements OnInit {
+export class VideosComponent implements OnInit, DoCheck {
+
+  ngDoCheck(): void {
+    console.log('VideosComponent checking');
+  }
 
   videos: Video[];
 
-  constructor(private apiService: ApiService, private store: Store<State>) {
+  constructor(private videoManager: VideoManager) {
   }
 
   ngOnInit() {
-    const videos$ = this.store.select(getVideos);
+    this.videoManager.getVideos().subscribe(videos => this.videos = videos);
+  }
 
-    videos$.take(1).subscribe(videos => {
-      console.log('videos in store', videos);
-      if (videos.length === 0) {
-        this.apiService.getVideos().subscribe(videos => {
-          this.store.dispatch(new AddVideosAction(videos));
-        });
-      }
-    });
+  hello() {
 
-    videos$.subscribe(videos => this.videos = videos);
   }
 
 }
