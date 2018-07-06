@@ -38,6 +38,7 @@ import {reducers} from './state/index';
 import {StoreDevtools, StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
 import {VideoManager} from './managers/video.manager';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import {VideoManager} from './managers/video.manager';
     CenterSpinnerComponent,
     VideoCardComponent,
     FlexAlignmentHackDirective,
-    TruncatePipe
+    TruncatePipe,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

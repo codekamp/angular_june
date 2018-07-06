@@ -1,6 +1,8 @@
-import {AfterViewChecked, Component, DoCheck, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {Video} from '../models/video';
 import {VideoManager} from '../managers/video.manager';
+import {FormControl} from '@angular/forms';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-videos',
@@ -18,21 +20,27 @@ import {VideoManager} from '../managers/video.manager';
       width: 200px;
       margin: 5px;
     }
-  `]
+  `],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class VideosComponent implements OnInit, DoCheck {
+export class VideosComponent implements OnInit {
 
-  ngDoCheck(): void {
-    console.log('VideosComponent checking');
-  }
 
   videos: Video[];
 
-  constructor(private videoManager: VideoManager) {
+  searchControl: FormControl;
+
+  constructor(private videoManager: VideoManager, private changeDetector: ChangeDetectorRef) {
   }
 
   ngOnInit() {
-    this.videoManager.getVideos().subscribe(videos => this.videos = videos);
+    const videos$ = this.videoManager.getVideos();
+
+    const search$ = this.searchControl.valueChanges.debounceTime(100).distinctUntilChanged() as Observable<string>;
+
+    videos$.combineLatest(search$, (videos: Video[], keyword: string) =>
+      videos.filter(video => video.title.indexOf(keyword) !== -1)
+    ).subsribe(videos => this.videos = videos);
   }
 
   hello() {

@@ -3,30 +3,40 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {LoginResponse} from '../models/login-response';
 import {Video} from '../models/video';
+import {User} from '../models/user';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class ApiService {
+
+  public user: User;
 
   constructor(private http: HttpClient) {
 
   }
 
   login(username: string, password: string): Observable<LoginResponse> {
-    return this.http.get<LoginResponse>(
-      'https://api.invidz.com/api/authenticate',
+    return this.get<LoginResponse>(
+      '/authenticate',
       {
-        params: {
-          email: username,
-          password: password
-        }
-      });
+        email: username,
+        password: password
+      }
+    ).do(data => this.user = data.user);
   }
 
   getVideos(): Observable<Video[]> {
+    return this.http.get<{ data: Video[] }>('/videos').map(res => res.data);
+  }
+
+  private get<T>(url: string, params: { [key: string]: any }): Observable<T> {
     const token = localStorage.getItem('USER_TOKEN');
-    return this.http.get<{data: Video[]}>('https://api.invidz.com/api/videos', {
-      headers: {Authorization: 'bearer ' + token}
-    }).map(res => res.data);
+    let headers = {};
+    if (token) {
+      headers = {Authorization: 'bearer ' + token};
+    }
+
+    return this.http.get<T>(environment.apiBaseUrl + url, {headers, params});
   }
 
   // state - big json object which stores all the data that need to be presisted
@@ -58,8 +68,4 @@ export class ApiService {
   // https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0
 
 
-
 }
-
-const getVideos = state => state.videos;
-const isSidebarOpen = state => state.sidebarOpen;

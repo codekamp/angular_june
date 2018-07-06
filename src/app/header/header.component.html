@@ -4,7 +4,8 @@ fxLayoutAlign="start center" fxLayoutAlign.xs="start start"
   <img src="/assets/images/filled-star.png" src.xs="/assets/images/empty-star.png" height="40">
   <a routerLink="/dashboard/videos">Videos</a>
   <a routerLink="/dashboard/emails">Emails</a>
+  <a routerLink="/dashboard/settings">Settings</a>
   <span fxFlex="1 1 0"></span>
-  <a fxFlexAlign="center" routerLink="/profile">{{username}}</a>
+  <a fxFlexAlign="center" routerLink="/profile">{{apiService.user.first_name + ' ' + apiService.user.last_name}}</a>
   <a fxFlexAlign="center" (click)="logout()">logout</a>
 </div>

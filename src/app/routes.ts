@@ -6,6 +6,7 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {VideosComponent} from './videos/videos.component';
 import {EmailsComponent} from './emails/emails.component';
 import {AuthGuard} from './guards/auth.guard';
+import {SettingsComponent} from './settings/settings.component';
 
 export const myRoutes: Routes = [
   {
@@ -32,6 +33,10 @@ export const myRoutes: Routes = [
       {
         path: 'emails',
         component: EmailsComponent
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent
       }
     ]
   },

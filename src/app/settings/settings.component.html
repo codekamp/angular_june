@@ -1,0 +1,9 @@
+<form>
+  <mat-form-field>
+    <input placeholder="first name" matInput [formControl]="fnameControl" />
+  </mat-form-field>
+  <mat-form-field>
+    <input placeholder="last name" matInput [formControl]="lnameControl" />
+  </mat-form-field>
+  <button mat-raised-button color="accent" (click)="save()">Save</button>
+</form>

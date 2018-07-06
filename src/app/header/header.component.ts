@@ -1,24 +1,20 @@
-import {Component, OnInit} from '@angular/core';
-import {EventBus} from '../services/event-bus';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import {ApiService} from '../services/api.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
 
-  username: string | null;
-
-  constructor(private eventBus: EventBus, private router: Router) { }
+  constructor(private router: Router, public apiService: ApiService) {
+  }
 
   ngOnInit() {
-    this.username = localStorage.getItem('USER_NAME');
 
-    this.eventBus.listen('LOGIN_SUCCESS').subscribe(user => {
-      this.username = user.first_name + ' ' + user.last_name;
-    });
   }
 
   logout() {
